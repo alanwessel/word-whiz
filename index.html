@@ -306,6 +306,7 @@
       <p id="congratsSubtitle"></p>
       <button id="tryOtherButton"></button>
       <button id="sharePopupButton">Share Your Score</button>
+			<a id="shareSmsLink" href="#" rel="noopener">Share via Text</a>
       <button id="admireButton">Admire Your Puzzle</button>
     </div>
   </div>
@@ -1036,6 +1037,10 @@
       };
       const shareBtn = document.getElementById("sharePopupButton");
       if (shareBtn) { shareBtn.onclick = () => { shareScore(); }; }
+			
+			const msg = buildShareMessage();
+			updateShareSmsLink(msg);
+
       document.getElementById("admireButton").onclick = () => {
         document.getElementById("congratsOverlay").style.display = "none";
         // Show standard post-win UI
@@ -1120,6 +1125,71 @@
     /////////////////////////////////
     // 10) Share button
     /////////////////////////////////
+		function buildShareMessage() {
+			const labelMap = { easy: "Novice", medium: "Medium", hard: "Expert" };
+			const diffLabel =
+				labelMap[gameDifficulty] ||
+				gameDifficulty.charAt(0).toUpperCase() + gameDifficulty.slice(1);
+
+			const timeText = document.getElementById("timer")
+				.textContent.replace("TIME: ", "").trim();
+
+			const isExpert = (gameDifficulty === "hard");
+			const square   = isExpert ? "🟥" : "🟩";
+
+			function parseTime(t) {
+				const [mm, rest] = t.split(":");
+				const [ss, cs]   = rest.split(".");
+				return Number(mm) * 60 + Number(ss) + Number(cs) / 100;
+			}
+			const totalSeconds = parseTime(timeText);
+
+			let paceEmoji;
+			if (isExpert) {
+				if (totalSeconds < 20) paceEmoji = "🔥🔥🔥";
+				else if (totalSeconds < 45) paceEmoji = "🔥🔥";
+				else if (totalSeconds <= 60) paceEmoji = "🔥";
+				else paceEmoji = "🧊";
+			} else {
+				if (totalSeconds < 10) paceEmoji = "🔥🔥🔥";
+				else if (totalSeconds < 20) paceEmoji = "🔥🔥";
+				else if (totalSeconds <= 30) paceEmoji = "🔥";
+				else paceEmoji = "🧊";
+			}
+
+			return (
+				`Word Whiz #${PUZZLE_NUMBER} ${diffLabel} ${square}\n` +
+				`${timeText} ${paceEmoji}` 
+			);
+		}
+
+		function updateShareSmsLink(shareMessage) {
+			const a = document.getElementById("shareSmsLink");
+			if (!a) return;
+
+			// iOS is picky: it prefers "sms:&body="; many others accept "sms:?body="
+			const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+			const bodyParam = encodeURIComponent(shareMessage);
+
+			const href = isIOS
+				? `sms:&body=${bodyParam}`
+				: `sms:?body=${bodyParam}`;
+
+			a.href = href;
+
+			// Optional: if SMS can't open (desktop), fall back to copy
+			a.onclick = (e) => {
+				// If it's not a phone-ish environment, copying is usually better UX
+				const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+				if (!isMobile) {
+					e.preventDefault();
+					copyToClipboard(shareMessage);
+				}
+				// otherwise let the default navigation happen
+			};
+		}
+
+		
 		function showToast(msg, ms = 2500) {
 			const el = document.getElementById("toast");
 			if (!el) return;
@@ -1133,41 +1203,8 @@
 
 		function shareScore() {
 			try {
-				const labelMap = { easy: "Novice", medium: "Medium", hard: "Expert" };
-				const diffLabel =
-					labelMap[gameDifficulty] ||
-					gameDifficulty.charAt(0).toUpperCase() + gameDifficulty.slice(1);
-
-				const timeText = document.getElementById("timer")
-					.textContent.replace("TIME: ", "").trim();
-
-				const isExpert = (gameDifficulty === "hard");
-				const square   = isExpert ? "🟥" : "🟩";
-
-				function parseTime(t) {
-					const [mm, rest] = t.split(":");
-					const [ss, ms]   = rest.split(".");
-					return Number(mm) * 60 + Number(ss) + Number(ms) / 100;
-				}
-				const totalSeconds = parseTime(timeText);
-
-				let paceEmoji;
-				if (isExpert) {
-					if (totalSeconds < 20) paceEmoji = "🔥🔥🔥";
-					else if (totalSeconds < 45) paceEmoji = "🔥🔥";
-					else if (totalSeconds <= 60) paceEmoji = "🔥";
-					else paceEmoji = "🧊";
-				} else {
-					if (totalSeconds < 10) paceEmoji = "🔥🔥🔥";
-					else if (totalSeconds < 20) paceEmoji = "🔥🔥";
-					else if (totalSeconds <= 30) paceEmoji = "🔥";
-					else paceEmoji = "🧊";
-				}
-
-				const shareMessage =
-					`Word Whiz #${PUZZLE_NUMBER} ${diffLabel} ${square}\n` +
-					`${timeText} ${paceEmoji}\n` +
-					`https://think-fast-games.com/pages/daily-puzzle`;
+				const shareMessage = buildShareMessage();
+				updateShareSmsLink(shareMessage);
 
 				const inIframe = (window.self !== window.top);
 
@@ -1189,6 +1226,7 @@
 				showToast("Couldn’t share—try again.");
 			}
 		}
+
 
 		function copyToClipboard(text) {
 			// Try modern clipboard API first
