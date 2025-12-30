@@ -141,6 +141,7 @@
       opacity: 0.5;
       cursor: not-allowed;
     }
+		
 
     /* Hide elements initially */
     #submitButton, #resetButton, #availableLabel {
@@ -283,6 +284,19 @@
     <button id="shareButton" onclick="shareScore()" style="display: none;">Share Score</button>
     <div id="otherDifficultyButtons" style="margin-top:1em;"></div>
     <div id="completionMessage"></div>
+		
+		<div id="toast" style="
+			display:none;
+			margin-top:10px;
+			padding:10px;
+			border-radius:8px;
+			background:#f5f5f5;
+			border:2px solid #000;
+			color:#000;
+			font-weight:bold;
+			text-align:center;
+		"></div>
+
   </div>
 
   <!-- === New: Congrats Overlay Modal (initially hidden) === -->
@@ -290,8 +304,6 @@
     <div id="congratsContent">
       <h2 id="congratsTitle">Congrats!</h2>
       <p id="congratsSubtitle"></p>
-      <p style="margin-top:10px;">Want more puzzles? Try the Word Whiz Puzzle Book, now available</p>
-      <a href="https://think-fast-games.com/products/word-whiz-pocket-puzzles-volume-1" target="_blank">Check It Out</a>
       <button id="tryOtherButton"></button>
       <button id="sharePopupButton">Share Your Score</button>
       <button id="admireButton">Admire Your Puzzle</button>
@@ -299,7 +311,7 @@
   </div>
 
   <script>
-    const PUZZLE_DATA_CSV_URL = "./data/word_whiz_puzzles_with_hints_v2.csv";
+	  const PUZZLE_DATA_CSV_URL = "./data/word_whiz_puzzles_with_hints_v2.csv";
 	  const SCHEDULE_CSV_URL    = "./data/daily_puzzle_schedule.csv";
     
     const lockedGreenLetters = new Set();
@@ -319,6 +331,7 @@
 				data.forEach(word => englishWords.add(word.toUpperCase()));
 			})
 			.catch(err => console.error("Error loading approved words:", err));
+			
 		
     // Utilities ...
     function getTodayDateString(){
@@ -1107,101 +1120,121 @@
     /////////////////////////////////
     // 10) Share button
     /////////////////////////////////
-    function shareScore() {
-			const labelMap = {
-				easy:   "Novice",
-				medium: "Medium",
-				hard:   "Expert"
-			};
-			const diffLabel =
-				labelMap[gameDifficulty] ||
-				gameDifficulty.charAt(0).toUpperCase() + gameDifficulty.slice(1);
+		function showToast(msg, ms = 2500) {
+			const el = document.getElementById("toast");
+			if (!el) return;
+			el.textContent = msg;
+			el.style.display = "block";
+			clearTimeout(showToast._t);
+			showToast._t = setTimeout(() => {
+				el.style.display = "none";
+			}, ms);
+		}
 
-			const timeText = document.getElementById("timer")
-				.textContent
-				.replace("TIME: ", "")
-				.trim();
+		function shareScore() {
+			try {
+				const labelMap = { easy: "Novice", medium: "Medium", hard: "Expert" };
+				const diffLabel =
+					labelMap[gameDifficulty] ||
+					gameDifficulty.charAt(0).toUpperCase() + gameDifficulty.slice(1);
 
-			const isExpert = (gameDifficulty === "hard");
-			const square   = isExpert ? "🟥" : "🟩";
+				const timeText = document.getElementById("timer")
+					.textContent.replace("TIME: ", "").trim();
 
-			// Parse "MM:SS.xx" → seconds as float
-			function parseTime(t) {
-				const [mm, rest] = t.split(":");
-				const [ss, ms]   = rest.split(".");
-				return Number(mm) * 60 + Number(ss) + Number(ms) / 100;
-			}
+				const isExpert = (gameDifficulty === "hard");
+				const square   = isExpert ? "🟥" : "🟩";
 
-			const totalSeconds = parseTime(timeText);
-
-			// --- Tiered Emojis ---
-			let paceEmoji;
-			if (isExpert) {
-				// Expert: 20 / 45 / 60 seconds
-				if (totalSeconds < 20) {
-					paceEmoji = "🔥🔥🔥";
-				} else if (totalSeconds < 45) {
-					paceEmoji = "🔥🔥";
-				} else if (totalSeconds <= 60) {
-					paceEmoji = "🔥";
-				} else {
-					paceEmoji = "🧊";
+				function parseTime(t) {
+					const [mm, rest] = t.split(":");
+					const [ss, ms]   = rest.split(".");
+					return Number(mm) * 60 + Number(ss) + Number(ms) / 100;
 				}
-			} else {
-				// Novice: 10 / 20 / 30 seconds
-				if (totalSeconds < 10) {
-					paceEmoji = "🔥🔥🔥";
-				} else if (totalSeconds < 20) {
-					paceEmoji = "🔥🔥";
-				} else if (totalSeconds <= 30) {
-					paceEmoji = "🔥";
+				const totalSeconds = parseTime(timeText);
+
+				let paceEmoji;
+				if (isExpert) {
+					if (totalSeconds < 20) paceEmoji = "🔥🔥🔥";
+					else if (totalSeconds < 45) paceEmoji = "🔥🔥";
+					else if (totalSeconds <= 60) paceEmoji = "🔥";
+					else paceEmoji = "🧊";
 				} else {
-					paceEmoji = "🧊";
+					if (totalSeconds < 10) paceEmoji = "🔥🔥🔥";
+					else if (totalSeconds < 20) paceEmoji = "🔥🔥";
+					else if (totalSeconds <= 30) paceEmoji = "🔥";
+					else paceEmoji = "🧊";
 				}
-			}
 
-			// LEFT-JUSTIFIED (no leading spaces)
-			const shareMessage =
-				`Word Whiz #${PUZZLE_NUMBER} ${diffLabel} ${square}\n` +
-				`${timeText} ${paceEmoji}\n` +
-				`https://think-fast-games.com/pages/daily-puzzle`;
+				const shareMessage =
+					`Word Whiz #${PUZZLE_NUMBER} ${diffLabel} ${square}\n` +
+					`${timeText} ${paceEmoji}\n` +
+					`https://think-fast-games.com/pages/daily-puzzle`;
 
-			if (navigator.share) {
-				navigator.share({
-					title: `Word Whiz #${PUZZLE_NUMBER}`,
-					text: shareMessage,
-				}).catch(err => {
-					console.error("Share failed:", err);
+				const inIframe = (window.self !== window.top);
+
+				// In Google Sites (iframe), Web Share often won’t work; go straight to copy.
+				if (!inIframe && navigator.share) {
+					navigator.share({
+						title: `Word Whiz #${PUZZLE_NUMBER}`,
+						text: shareMessage,
+					}).then(() => {
+						showToast("Shared!");
+					}).catch(() => {
+						copyToClipboard(shareMessage);
+					});
+				} else {
 					copyToClipboard(shareMessage);
-				});
-			} else {
-				copyToClipboard(shareMessage);
+				}
+			} catch (err) {
+				console.error("shareScore() error:", err);
+				showToast("Couldn’t share—try again.");
 			}
 		}
 
+		function copyToClipboard(text) {
+			// Try modern clipboard API first
+			if (navigator.clipboard && window.isSecureContext) {
+				navigator.clipboard.writeText(text)
+					.then(() => showToast("Score copied to clipboard!"))
+					.catch(() => fallbackCopy(text));
+			} else {
+				fallbackCopy(text);
+			}
+		}
 
-    
-    // Helper to copy text and alert the user
-    function copyToClipboard(text) {
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(text)
-          .then(() => alert("Score copied to clipboard!"))
-          .catch(() => fallbackCopy(text));
-      } else {
-        fallbackCopy(text);
-      }
-    }
-    
-    // Old-school execCommand fallback
-    function fallbackCopy(text) {
-      const ta = document.createElement("textarea");
-      ta.value = text;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand("copy");
-      document.body.removeChild(ta);
-      alert("Score copied to clipboard!");
-    }
+		function fallbackCopy(text) {
+			// Works better in many iframe situations than clipboard.writeText
+			const ta = document.createElement("textarea");
+			ta.value = text;
+			ta.setAttribute("readonly", "");
+			ta.style.position = "fixed";
+			ta.style.left = "-9999px";
+			ta.style.top = "-9999px";
+			document.body.appendChild(ta);
+			ta.select();
+			ta.setSelectionRange(0, ta.value.length);
+
+			let ok = false;
+			try {
+				ok = document.execCommand("copy");
+			} catch (e) {
+				ok = false;
+			}
+			document.body.removeChild(ta);
+
+			if (ok) {
+				showToast("Score copied! Paste it anywhere.");
+			} else {
+				// Last resort: show the text to the user
+				showToast("Copy blocked. Showing share text below:", 4000);
+				// put the text into the toast area after the message
+				const el = document.getElementById("toast");
+				if (el) {
+					el.style.display = "block";
+					el.innerHTML = `Copy blocked. Long-press / select and copy:<br><pre style="white-space:pre-wrap;text-align:left;margin:8px 0 0;">${text}</pre>`;
+				}
+			}
+		}
+
 
     // as soon as the DOM is ready:
     document.addEventListener("DOMContentLoaded", () => {
