@@ -3,287 +3,287 @@
 
 
 
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Word Whiz Puzzle</title>
-  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      background: #000;
-    }
-    .container {
-      max-width: 400px;
-      margin: auto;
-      background: white;
-      padding-top: 1px;
-      padding-right: 20px;
-      padding-left: 20px;
-      padding-bottom: 20px;
-      padding: 20px;
-      border-radius: 10px;
-      box-sizing: border-box;
-    }
-    h1 {
-      font-size: 24px;
-      margin-bottom: 10px;
-      margin-top: 0;
-      color: #000
-    }
-    .instructions {
-      margin: 0.2em 0 0.5em;
-      font-size: 1em;
-      color: #333;
-    }
-    .available-label {
-      margin: 0 0 0.5em;
-      font-size: 1.2em;
-      font-weight: bold;
-      color: #000
-    }
-    .letter-row {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 10px;
-    }
-    .letter-box, .input-box {
-      width: 50px;
-      height: 50px;
-      margin: 0 3px;
-      font-size: 32px;
-      font-weight: bold;
-      color: black;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border-radius: 5px;
-      text-transform: uppercase;
-      box-sizing: border-box;
-    }
-    .green { background-color: #7ed957 !important; border: 2px solid #000 !important; }
-    .red   { background-color: #ff9999 !important; border: 2px solid #000 !important; }
-    .white { background-color: #f5f5f5 !important; border: 2px solid #000 !important; }
-    .blue  { background-color: #38b6ff !important; border: 2px solid #000 !important; }
-    .input-box {
-      background-color: #f5f5f5;
-      border: 2px solid #999;
-    }
-    .input-box input {
-      width: 100%;
-      height: 100%;
-      border: none;
-      text-align: center;
-      font-size: 32px;
-      font-weight: bold;
-      color: black;
-      outline: none;
-      text-transform: uppercase;
-      background-color: transparent;
-      padding: 0;
-      box-sizing: border-box;
-      caret-color: transparent;
-    }
-    .letter-select {
-      display: none;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
-    .letter-select {
-      position: sticky;
-      top: 10px;         
-      background: #fff;  
-      z-index: 100;      /* sit above the grid as you scroll */
-      padding: 5px 0;    
-    }
-    .timer {
-      margin-bottom: 10px;
-      font-weight: bold;
-      color: black;
-      display: none;
-    }
-    #countdown {
-      font-size: 48px;
-      font-weight: bold;
-      color: black;
-      margin-bottom: 20px;
-    }
-    #completionMessage {
-      margin-top: 15px;
-      font-weight: bold;
-      color: #4CAF50;
-    }
-    .start-controls select {
-      padding: 5px 10px;
-      font-size: 20px;
-      font-weight: bold;
-      color: black;
-      border-radius: 5px;
-      border: none;
-      background: #38b6ff;
-      cursor: pointer;
-    }
-    button {
-      padding: 5px 10px;
-      font-size: 20px;
-      font-weight: bold;
-      background-color: #38b6ff;
-      color: black;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      margin: 5px;
-    }
-    button:hover {
-      background-color: #1976D2;
-    }
-    button:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Word Whiz Puzzle</title>
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<style>
+body {
+font-family: Arial, sans-serif;
+text-align: center;
+background: #000;
+}
+.container {
+max-width: 400px;
+margin: auto;
+background: white;
+padding-top: 1px;
+padding-right: 20px;
+padding-left: 20px;
+padding-bottom: 20px;
+padding: 20px;
+border-radius: 10px;
+box-sizing: border-box;
+}
+h1 {
+font-size: 24px;
+margin-bottom: 10px;
+margin-top: 0;
+color: #000
+}
+.instructions {
+margin: 0.2em 0 0.5em;
+font-size: 1em;
+color: #333;
+}
+.available-label {
+margin: 0 0 0.5em;
+font-size: 1.2em;
+font-weight: bold;
+color: #000
+}
+.letter-row {
+display: flex;
+justify-content: center;
+margin-bottom: 10px;
+}
+.letter-box, .input-box {
+width: 50px;
+height: 50px;
+margin: 0 3px;
+font-size: 32px;
+font-weight: bold;
+color: black;
+display: flex;
+justify-content: center;
+align-items: center;
+border-radius: 5px;
+text-transform: uppercase;
+box-sizing: border-box;
+}
+.green { background-color: #7ed957 !important; border: 2px solid #000 !important; }
+.red   { background-color: #ff9999 !important; border: 2px solid #000 !important; }
+.white { background-color: #f5f5f5 !important; border: 2px solid #000 !important; }
+.blue  { background-color: #38b6ff !important; border: 2px solid #000 !important; }
+.input-box {
+background-color: #f5f5f5;
+border: 2px solid #999;
+}
+.input-box input {
+width: 100%;
+height: 100%;
+border: none;
+text-align: center;
+font-size: 32px;
+font-weight: bold;
+color: black;
+outline: none;
+text-transform: uppercase;
+background-color: transparent;
+padding: 0;
+box-sizing: border-box;
+caret-color: transparent;
+}
+.letter-select {
+display: none;
+justify-content: center;
+margin-bottom: 20px;
+}
+.letter-select {
+position: sticky;
+top: 10px;         
+background: #fff;  
+z-index: 100;      /* sit above the grid as you scroll */
+padding: 5px 0;    
+}
+.timer {
+margin-bottom: 10px;
+font-weight: bold;
+color: black;
+display: none;
+}
+#countdown {
+font-size: 48px;
+font-weight: bold;
+color: black;
+margin-bottom: 20px;
+}
+#completionMessage {
+margin-top: 15px;
+font-weight: bold;
+color: #4CAF50;
+}
+.start-controls select {
+padding: 5px 10px;
+font-size: 20px;
+font-weight: bold;
+color: black;
+border-radius: 5px;
+border: none;
+background: #38b6ff;
+cursor: pointer;
+}
+button {
+padding: 5px 10px;
+font-size: 20px;
+font-weight: bold;
+background-color: #38b6ff;
+color: black;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+margin: 5px;
+}
+button:hover {
+background-color: #1976D2;
+}
+button:disabled {
+opacity: 0.5;
+cursor: not-allowed;
+}
 		
 
-    /* Hide elements initially */
-    #submitButton, #resetButton, #availableLabel {
-      display: none;
-    }
-    .hidden {
-      display: none !important;
-    }
-    #logo {
-      display: block;
-      width: 100px !important;       /* or whatever width fits */
-      height: auto !important;           /* maintain aspect ratio */
-    }
-    .header {
-      display: inline-flex;       /* shrink-wrap to content and honor container’s text-align */
-      align-items: center;        /* vertical-center logo + text */
-      gap: 0.5em;                 /* space between logo and heading */
-      margin-bottom: 0.1em;         /* optional spacing below */
-      justify-content: center;
-    }
-    #howToButton {
-      display: inline-block;      /* always visible from the get-go */
-      margin: 5px;          /* small gap below Start */
-      padding: 5px 10px;
-      font-size: 20px;
-      font-weight: bold;
-      background-color: #7ed957;     /* or any contrast color you like */
-      color: black;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    #howToButton:hover {
-      background-color: #64AE46;
-    }
-    .message-area {
-      min-height: 1.5em;      /* reserve enough space */
-      margin: 0.5em 0;        /* gap above and below */
-      font-size: 1em;
-      font-weight: bold;
-      color: #c00;            /* default “error” color */
-    }
-    .message-area.success {
-      color: #4CAF50;
-    }
-    #wordGrid.error-flash .input-box {
-      background-color: #ff9999 !important;
-    }
-    .puzzle-number {
-      font-size: 1.2em;
-      font-weight: bold;
-      margin-bottom: 0.5em;
-      color: #333;
-      display: none; /* hide until we set it */
-    }
+/* Hide elements initially */
+#submitButton, #resetButton, #availableLabel {
+display: none;
+}
+.hidden {
+display: none !important;
+}
+#logo {
+display: block;
+width: 100px !important;       /* or whatever width fits */
+height: auto !important;           /* maintain aspect ratio */
+}
+.header {
+display: inline-flex;       /* shrink-wrap to content and honor container’s text-align */
+align-items: center;        /* vertical-center logo + text */
+gap: 0.5em;                 /* space between logo and heading */
+margin-bottom: 0.1em;         /* optional spacing below */
+justify-content: center;
+}
+#howToButton {
+display: inline-block;      /* always visible from the get-go */
+margin: 5px;          /* small gap below Start */
+padding: 5px 10px;
+font-size: 20px;
+font-weight: bold;
+background-color: #7ed957;     /* or any contrast color you like */
+color: black;
+border: none;
+border-radius: 5px;
+cursor: pointer;
+}
+#howToButton:hover {
+background-color: #64AE46;
+}
+.message-area {
+min-height: 1.5em;      /* reserve enough space */
+margin: 0.5em 0;        /* gap above and below */
+font-size: 1em;
+font-weight: bold;
+color: #c00;            /* default “error” color */
+}
+.message-area.success {
+color: #4CAF50;
+}
+#wordGrid.error-flash .input-box {
+background-color: #ff9999 !important;
+}
+.puzzle-number {
+font-size: 1.2em;
+font-weight: bold;
+margin-bottom: 0.5em;
+color: #333;
+display: none; /* hide until we set it */
+}
 
-    /* === New: Congrats Overlay === */
-    #congratsOverlay {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.75);
-      display: none; /* only shown after a real win */
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-    }
-    #congratsContent {
-      background: white;
-      padding: 30px;
-      border-radius: 10px;
-      text-align: center;
-      max-width: 90%;
-      width: 360px;
-    }
-    #congratsContent h2 { margin-top: 0; color: #38b6ff; }
-    #congratsContent p {
-  color: #000; /* ensure visible text */
- font-size: 1.1em; margin-bottom: 20px; }
-    #congratsContent button, #congratsContent a {
-      display: block; width: 100%; margin: 8px 0; padding: 10px;
-      font-size: 18px; font-weight: bold; background: #38b6ff; color: black;
-      border: none; border-radius: 6px; cursor: pointer; text-decoration: none;
-    }
-    #congratsContent button:hover, #congratsContent a:hover { background: #1976D2; color: white; }
-  #congratsSubtitle {
-  color: #000;
-  font-weight: 600;
+/* === New: Congrats Overlay === */
+#congratsOverlay {
+position: fixed;
+top: 0; left: 0;
+width: 100%; height: 100%;
+background: rgba(0,0,0,0.75);
+display: none; /* only shown after a real win */
+align-items: center;
+justify-content: center;
+z-index: 9999;
+}
+#congratsContent {
+background: white;
+padding: 30px;
+border-radius: 10px;
+text-align: center;
+max-width: 90%;
+width: 360px;
+}
+#congratsContent h2 { margin-top: 0; color: #38b6ff; }
+#congratsContent p {
+color: #000; /* ensure visible text */
+font-size: 1.1em; margin-bottom: 20px; }
+#congratsContent button, #congratsContent a {
+display: block; width: 100%; margin: 8px 0; padding: 10px;
+font-size: 18px; font-weight: bold; background: #38b6ff; color: black;
+border: none; border-radius: 6px; cursor: pointer; text-decoration: none;
+}
+#congratsContent button:hover, #congratsContent a:hover { background: #1976D2; color: white; }
+#congratsSubtitle {
+color: #000;
+font-weight: 600;
 }
 </style>
 
 
-  <div class="container">
-    <div class="header">
-      <img id="logo" src="https://cdn.shopify.com/s/files/1/0638/2226/6526/files/Word_Whiz_logo.png?v=1725721604" alt="Word Whiz Logo">
-      <h1>WORD WHIZ<br><small>DAILY PUZZLE</small>
+<div class="container">
+<div class="header">
+<img id="logo" src="https://cdn.shopify.com/s/files/1/0638/2226/6526/files/Word_Whiz_logo.png?v=1725721604" alt="Word Whiz Logo">
+<h1>WORD WHIZ<br><small>DAILY PUZZLE</small>
 </h1>
-    </div>
+</div>
 
-    <!-- Countdown before grid appears -->
-    <div id="countdown" class="hidden"></div>
+<!-- Countdown before grid appears -->
+<div id="countdown" class="hidden"></div>
 
-    <!-- Puzzle number display -->
-    <div id="puzzleNumber" class="puzzle-number"></div>
+<!-- Puzzle number display -->
+<div id="puzzleNumber" class="puzzle-number"></div>
 
-    <!-- BEFORE START: static instruction -->
-    <div id="instructions" class="instructions">
-      <b>Your objective is to get from the First Word to the Last Word. You must:</b>
-      <br>1) Swap <u>exactly one</u> letter between each word.
-      <br>2) <u>New</u> letters can only be from the<br><u>Available Letters</u> list.
-      <br>3) Create a path of exactly six words,<br>where <u>each word is different</u>.<br>
-    </div>
-    
+<!-- BEFORE START: static instruction -->
+<div id="instructions" class="instructions">
+<b>Your objective is to get from the First Word to the Last Word. You must:</b>
+<br>1) Swap <u>exactly one</u> letter between each word.
+<br>2) <u>New</u> letters can only be from the<br><u>Available Letters</u> list.
+<br>3) Create a path of exactly six words,<br>where <u>each word is different</u>.<br>
+</div>
 
-    <!-- Label, hidden until start -->
-    <h3 id="availableLabel" class="available-label">Available Letters</h3>
 
-    <!-- Available letters -->
-    <div class="letter-select" id="letterSelect"></div>
+<!-- Label, hidden until start -->
+<h3 id="availableLabel" class="available-label">Available Letters</h3>
 
-    <!-- Timer and grid -->
-    <div class="timer" id="timer">TIME: 00:00.00</div>
-    <div id="wordGrid"></div>
+<!-- Available letters -->
+<div class="letter-select" id="letterSelect"></div>
 
-    <!-- Control button dropdown -->
-    <div class="start-controls">
-      <select id="difficultySelect">
-        <option value="" disabled selected>Play Daily Puzzle</option>
-        <option value="easy">Novice</option>
-        <option value="hard">Expert</option>
-      </select>
-    </div>
+<!-- Timer and grid -->
+<div class="timer" id="timer">TIME: 00:00.00</div>
+<div id="wordGrid"></div>
 
-    <button id="howToButton" onclick="window.location.href='https://think-fast-games.com/pages/word-whiz-daily-puzzle-how-to-play'">
-      How to Play
-    </button>
-    <div id="messageArea" class="message-area"></div>
-    <button id="submitButton" onclick="submitPuzzle()" disabled>Submit</button>
-    <button id="resetButton" onclick="resetPuzzle()" disabled>Reset</button>
-    <button id="shareButton" onclick="shareScore()" style="display: none;">Share Score</button>
-    <div id="otherDifficultyButtons" style="margin-top:1em;"></div>
-    <div id="completionMessage"></div>
+<!-- Control button dropdown -->
+<div class="start-controls">
+<select id="difficultySelect">
+<option value="" disabled selected>Play Daily Puzzle</option>
+<option value="easy">Novice</option>
+<option value="hard">Expert</option>
+</select>
+</div>
+
+<button id="howToButton" onclick="window.location.href='https://think-fast-games.com/pages/word-whiz-daily-puzzle-how-to-play'">
+How to Play
+</button>
+<div id="messageArea" class="message-area"></div>
+<button id="submitButton" onclick="submitPuzzle()" disabled>Submit</button>
+<button id="resetButton" onclick="resetPuzzle()" disabled>Reset</button>
+<button id="shareButton" onclick="shareScore()" style="display: none;">Share Score</button>
+<div id="otherDifficultyButtons" style="margin-top:1em;"></div>
+<div id="completionMessage"></div>
 		
 		<div id="toast" style="
 			display:none;
@@ -297,899 +297,856 @@
 			text-align:center;
 		"></div>
 
-  </div>
+</div>
 
-  <!-- === New: Congrats Overlay Modal (initially hidden) === -->
-  <div id="congratsOverlay">
-    <div id="congratsContent">
-      <h2 id="congratsTitle">Congrats!</h2>
-      <p id="congratsSubtitle"></p>
-      <button id="tryOtherButton"></button>
-      <button id="sharePopupButton">Share Your Score</button>
-			<a id="shareSmsLink" href="#" rel="noopener">Share via Text</a>
-      <button id="admireButton">Admire Your Puzzle</button>
-    </div>
-  </div>
+<!-- === New: Congrats Overlay Modal (initially hidden) === -->
+<div id="congratsOverlay">
+<div id="congratsContent">
+<h2 id="congratsTitle">Congrats!</h2>
+<p id="congratsSubtitle"></p>
+      <p style="margin-top:10px;">Want more puzzles? Try the Word Whiz Puzzle Book, now available</p>
+      <a href="https://think-fast-games.com/products/word-whiz-pocket-puzzles-volume-1" target="_blank">Check It Out</a>
+<button id="tryOtherButton"></button>
+<button id="sharePopupButton">Share Your Score</button>
+<button id="admireButton">Admire Your Puzzle</button>
+</div>
+</div>
 
-  <script>
+<script>
+    const PUZZLE_DATA_CSV_URL = "./data/word_whiz_puzzles_with_hints_v2.csv";
 	  const PUZZLE_DATA_CSV_URL = "./data/word_whiz_puzzles_with_hints_v2.csv";
-	  const SCHEDULE_CSV_URL    = "./data/daily_puzzle_schedule.csv";
-    
-    const lockedGreenLetters = new Set();
-    const usedLetters = new Set();
-    let currentInput = null;
-    let gameDifficulty = 'hard'; // default
-    let puzzleDataRow = null;
+const SCHEDULE_CSV_URL    = "./data/daily_puzzle_schedule.csv";
 
-    let startWord = "", endWord = "", correctWords = [], availableLetters = []; hintPositions = [];
-    let letterElements = {}, puzzleCompleted = false, timerInterval, startTime, PUZZLE_NUMBER = 1;
-		
-		let englishWords = new Set();
+const lockedGreenLetters = new Set();
+const usedLetters = new Set();
+let currentInput = null;
+let gameDifficulty = 'hard'; // default
+let puzzleDataRow = null;
 
-		fetch("./data/ApprovedWords4.json")
-			.then(response => response.json())
-			.then(data => {
-				data.forEach(word => englishWords.add(word.toUpperCase()));
-			})
-			.catch(err => console.error("Error loading approved words:", err));
+let startWord = "", endWord = "", correctWords = [], availableLetters = []; hintPositions = [];
+let letterElements = {}, puzzleCompleted = false, timerInterval, startTime, PUZZLE_NUMBER = 1;
+
+let englishWords = new Set();
+
+fetch("./data/ApprovedWords4.json")
+.then(response => response.json())
+.then(data => {
+data.forEach(word => englishWords.add(word.toUpperCase()));
+})
+.catch(err => console.error("Error loading approved words:", err));
 			
-		
-    // Utilities ...
-    function getTodayDateString(){
-      const d = new Date();
-      return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-    }
 
-    function flashGrid() {
-      const grid = document.getElementById("wordGrid");
-      grid.classList.add("error-flash");
-      setTimeout(() => grid.classList.remove("error-flash"), 1000);
-    }
+// Utilities ...
+function getTodayDateString(){
+const d = new Date();
+return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
 
-    function populateOtherDifficultyButtons() {
-			const container = document.getElementById("otherDifficultyButtons");
-			container.innerHTML = "";
+function flashGrid() {
+const grid = document.getElementById("wordGrid");
+grid.classList.add("error-flash");
+setTimeout(() => grid.classList.remove("error-flash"), 1000);
+}
 
-			// Map your internal keys to the display names
-			const labels = {
+function populateOtherDifficultyButtons() {
+const container = document.getElementById("otherDifficultyButtons");
+container.innerHTML = "";
+
+// Map your internal keys to the display names
+const labels = {
+easy:   "Novice",
+hard:   "Expert"
+};
+
+["easy", "hard"].forEach(d => {
+if (d === gameDifficulty) return;
+const btn = document.createElement("button");
+btn.textContent = `Try Daily ${labels[d]}`;
+btn.onclick = () => restartGame(d);
+container.appendChild(btn);
+});
+}
+
+function handleFocus(e) {
+const input = e.target;
+const box   = input.parentElement;
+box.classList.add("focused");  // add thick blue border
+input.select();                // select the existing letter
+}
+
+// Call this on blur
+function handleBlur(e) {
+e.target.parentElement.classList.remove("focused");
+}
+
+//////////////////////////////
+// 1) START GAME & COUNTDOWN
+//////////////////////////////
+function startGame(diff){
+gameDifficulty = diff;
+document.getElementById("howToButton").style.display = "none";
+
+// show countdown
+const cd = document.getElementById("countdown");
+cd.classList.remove("hidden");
+let count = 3;
+cd.textContent = count;
+const iv = setInterval(()=>{
+count--;
+if(count > 0){
+cd.textContent = count;
+} else {
+clearInterval(iv);
+cd.classList.add("hidden");
+// reveal labels & buttons
+document.getElementById("availableLabel").style.display = "block";
+document.getElementById("letterSelect").style.display = "flex";
+const sb = document.getElementById("submitButton");
+const rb = document.getElementById("resetButton");
+sb.style.display = "inline-block"; sb.disabled = false;
+rb.style.display = "inline-block"; rb.disabled = false;
+// Show the timer now that the grid is about to appear
+document.getElementById("timer").style.display = "block";
+// load puzzle
+fetchPuzzleNumberAndLoad();
+}
+}, 1000);
+}
+
+function restartGame(diff) {
+gameDifficulty = diff;
+
+// 1) Reset all old state
+stopTimer();
+puzzleCompleted = false;
+lockedGreenLetters.clear();
+usedLetters.clear();
+document.getElementById("completionMessage").textContent = "";
+document.getElementById("messageArea").textContent = "";
+document.getElementById("timer").textContent = "TIME: 00:00.00";
+document.getElementById("timer").style.display = "none";
+
+// 2) Hide post-completion UI
+document.getElementById("shareButton").style.display = "none";
+document.getElementById("otherDifficultyButtons").innerHTML = "";
+
+// 3) Hide play-area (grid, puzzle #, instructions, letters, buttons)
+document.getElementById("puzzleNumber").style.display   = "none";
+document.getElementById("instructions").style.display   = "none";
+document.getElementById("availableLabel").style.display = "none";
+document.getElementById("letterSelect").style.display   = "none";
+document.getElementById("wordGrid").style.display       = "none";
+document.getElementById("submitButton").style.display   = "none";
+document.getElementById("submitButton").disabled        = true;
+document.getElementById("resetButton").style.display    = "none";
+document.getElementById("resetButton").disabled         = true;
+
+// 4) Show 3-2-1 countdown
+const cd = document.getElementById("countdown");
+cd.classList.remove("hidden");
+let count = 3;
+cd.textContent = count;
+
+const iv = setInterval(() => {
+count--;
+if (count > 0) {
+cd.textContent = count;
+} else {
+clearInterval(iv);
+cd.classList.add("hidden");
+
+// 5) Reveal all the play-area elements again
+document.getElementById("puzzleNumber").style.display   = "block";
+document.getElementById("instructions").style.display   = "block";
+document.getElementById("availableLabel").style.display = "block";
+document.getElementById("letterSelect").style.display   = "flex";
+document.getElementById("wordGrid").style.display       = "block";
+document.getElementById("submitButton").style.display   = "inline-block";
+document.getElementById("submitButton").disabled        = false;
+document.getElementById("resetButton").style.display    = "inline-block";
+document.getElementById("resetButton").disabled         = false;
+document.getElementById("timer").style.display          = "block";
+
+// 6) Finally re-load the puzzle
+fetchPuzzleNumberAndLoad();
+}
+}, 1000);
+}
+
+
+
+////////////////////////////////////
+// 2) FETCH & BUILD DAILY PUZZLE
+////////////////////////////////////
+function fetchPuzzleNumberAndLoad() {
+Papa.parse(SCHEDULE_CSV_URL, {
+download: true,
+header:   true,
+complete: results => {
+const todayStr = getTodayDateString();            // e.g. "2025-07-04"
+const row      = results.data.find(r => r.Date === todayStr);
+if (!row) {
+document.getElementById("completionMessage").textContent =
+"No puzzle scheduled for today's date.";
+return;
+}
+
+// pick the right column name: "Easy", "Medium" or "Hard"
+const colName = gameDifficulty[0].toUpperCase() +
+gameDifficulty.slice(1);        // e.g. "Hard"
+
+// parse the puzzle number out of that column
+PUZZLE_NUMBER = parseInt(row[colName], 10);
+
+// now load the actual puzzle data
+loadPuzzleData();
+}
+});
+}
+
+function loadPuzzleData(){
+Papa.parse(PUZZLE_DATA_CSV_URL, {
+download: true,
+header:   true,
+complete: res => {
+const row = res.data.find(r => parseInt(r["Puzzle #"],10) === PUZZLE_NUMBER);
+if (!row) {
+document.getElementById("completionMessage").textContent = "Puzzle not found.";
+return;
+}
+puzzleDataRow = row;
+startWord  = row["StartWord"]?.trim();
+endWord    = row["EndWord"]?.trim();
+correctWords = [
+startWord,
+row["Word 1"]?.trim(),
+row["Word 2"]?.trim(),
+row["Word 3"]?.trim(),
+row["Word 4"]?.trim(),
+endWord
+];
+availableLetters = [
+row["Letter 1"], row["Letter 2"],
+row["Letter 3"], row["Letter 4"],
+row["Letter 5"]
+].filter(Boolean).map(s=>s.trim());
+buildPuzzle(); 
+}
+});
+}
+
+//////////////////////////
+// 3) BUILD THE GRID/UI
+//////////////////////////
+function buildPuzzle(){
+// show the puzzle number above the instructions
+const pn = document.getElementById("puzzleNumber");
+pn.textContent = `Puzzle #${PUZZLE_NUMBER}`;  
+pn.style.display = "block";
+
+// instructions text with bold words
+document.getElementById("instructions").innerHTML =
+`Swap exactly one letter between words to get from <strong>${startWord}</strong> to <strong>${endWord}</strong><br>(all six words must be unique)`;
+
+const grid = document.getElementById("wordGrid");
+const letterSelect = document.getElementById("letterSelect");
+grid.innerHTML = ""; letterSelect.innerHTML = "";
+document.getElementById("completionMessage").textContent = "";
+document.getElementById("timer").textContent = "TIME: 00:00.00";
+letterElements = {}; puzzleCompleted = false;
+
+// available letters
+shuffleArray(availableLetters).forEach(letter=>{
+const el = createLetterBox(letter, "white");
+letterSelect.appendChild(el);
+letterElements[letter] = el;
+});
+
+// start word row
+const sr = document.createElement("div"); sr.className="letter-row";
+for(const c of startWord) sr.appendChild(createLetterBox(c,"green"));
+grid.appendChild(sr);
+
+// input rows
+for(let i=1;i<=4;i++){
+grid.appendChild(createInputRow(i));
+}
+
+// hint letters
+if (gameDifficulty !== 'hard') {
+for (let step = 1; step <= 4; step++) {
+const codeA = puzzleDataRow[`EasyH${step}a`]?.trim();
+const codeB = gameDifficulty === 'easy'
+? puzzleDataRow[`EasyH${step}b`]?.trim()
+: null;
+
+[codeA, codeB].forEach(code => {
+if (!code) return;
+const col    = parseInt(code.charAt(0), 10) - 1;
+const rowNum = step;
+const letter = code.charAt(1);
+const inp = document.querySelector(
+`input[data-row='${rowNum}'][data-col='${col}']`
+);
+if (inp) {
+inp.value = letter;
+inp.readOnly = true;
+inp.classList.add('hint-cell');            // ← tag it
+inp.parentElement.classList.add('green');
+// note: do NOT add to lockedGreenLetters
+}
+});
+}
+}
+
+
+// end word row
+const er = document.createElement("div"); er.className="letter-row";
+for(const c of endWord) er.appendChild(createLetterBox(c,"green"));
+grid.appendChild(er);
+
+updateSubmitState();
+
+// focus first read-only cell
+const inputs = Array.from(document.querySelectorAll(".input-box input"));
+const firstEditable = inputs.find(input => !input.readOnly);
+if (firstEditable) firstEditable.focus();
+
+// if they’ve already solved this diff today, restore and skip the timer
+if (restoreIfCompleted()) {
+return;
+}
+startTimer();
+}
+
+function restoreIfCompleted() {
+const today   = getTodayDateString();
+const keyBase = `ww_${gameDifficulty}_${today}`;
+const savedTime = localStorage.getItem(`${keyBase}_time`);
+const savedMsg  = localStorage.getItem(`${keyBase}_msg`);
+
+if (!savedTime || !savedMsg) return false;
+
+// 1) Stop any timer
+stopTimer();
+puzzleCompleted = true;
+
+// 2) Fill in and lock all the input cells with the correct words
+document.querySelectorAll(".input-box input").forEach(input => {
+const r = parseInt(input.dataset.row, 10);  // 1..4
+const c = parseInt(input.dataset.col, 10);  // 0..3
+const letter = correctWords[r][c];          // correctWords[1] is Word 1, etc.
+input.value = letter;
+input.readOnly = true;
+input.parentElement.classList.remove("red");
+input.parentElement.classList.add("green");
+});
+
+// 3) Restore timer display & congrats message
+document.getElementById("timer").textContent =
+`TIME: ${savedTime}`;
+const msgEl = document.getElementById("messageArea");
+msgEl.textContent = localStorage.getItem(`ww_msg_${gameDifficulty}`);
+msgEl.classList.add("success");
+
+// 4) Show Share + other-difficulty buttons
+document.getElementById("shareButton").style.display = "inline-block";
+populateOtherDifficultyButtons();
+
+// Hide and disable Reset now that we're done**
+const resetBtn = document.getElementById("resetButton");
+resetBtn.style.display = "none";
+resetBtn.disabled = true;
+
+// Also disable Submit to prevent re-submissions
+const submitBtn = document.getElementById("submitButton");
+submitBtn.style.display = "none";
+submitBtn.disabled = true;
+
+return true;
+}
+//////////////////////////
+// 4) TIMER
+//////////////////////////
+function startTimer(){
+const today = getTodayDateString();  
+const key   = `ww_timerStart_${gameDifficulty}_${today}`;
+const saved = localStorage.getItem(key);
+
+if (saved) {
+// resume from the old start
+startTime = new Date(saved);
+} else {
+// fresh start
+startTime = new Date();
+localStorage.setItem(key, startTime.toISOString());
+}
+
+clearInterval(timerInterval);
+timerInterval = setInterval(()=>{
+const e = new Date(new Date() - startTime);
+const mm = String(e.getUTCMinutes()).padStart(2,'0');
+const ss = String(e.getUTCSeconds()).padStart(2,'0');
+const ms = String(Math.floor(e.getUTCMilliseconds()/10)).padStart(2,'0');
+document.getElementById("timer").textContent = `TIME: ${mm}:${ss}.${ms}`;
+},50);
+}
+function stopTimer(){  
+clearInterval(timerInterval);
+
+// remove the persisted start, so tomorrow’s puzzle won't reuse it
+const today = getTodayDateString();
+const key   = `ww_timerStart_${gameDifficulty}_${today}`;
+localStorage.removeItem(key);
+}
+
+//////////////////////////////////////
+// 5) CREATE ROWS & LETTER BOXES
+//////////////////////////////////////
+function createLetterBox(letter, colorClass="white"){
+const d=document.createElement("div");
+d.className=`letter-box ${colorClass}`;
+d.textContent=letter;
+return d;
+}
+function createInputRow(rowIndex){
+const row=document.createElement("div"); row.className="letter-row";
+for(let col=0;col<4;col++){
+const box=document.createElement("div"); box.className="input-box";
+const inp=document.createElement("input");
+inp.maxLength=1;
+inp.dataset.row=rowIndex;
+inp.dataset.col=col;
+inp.addEventListener("focus", e => {
+const inp = e.target;
+if (!inp.readOnly) {
+// select the one-character content
+inp.setSelectionRange(0, inp.value.length);
+}
+});
+//inp.addEventListener("focus", ()=> currentInput=inp);
+//inp.addEventListener("focus", handleFocus);
+inp.addEventListener("input", handleInput);
+inp.addEventListener("blur",  handleBlur);
+inp.addEventListener("keydown", handleKeydown);
+box.appendChild(inp);
+row.appendChild(box);
+}
+return row;
+}
+
+////////////////////////////////////
+// 6) INPUT HANDLERS & NAVIGATION
+////////////////////////////////////
+function handleInput(e) {
+const input = e.target;
+currentInput = input;
+// normalize
+input.value = input.value.toUpperCase();
+highlightUsedLetters();
+updateSubmitState();
+
+// only auto-advance if they actually typed something
+if (!input.value) return;
+
+let row = +input.dataset.row;
+let col = +input.dataset.col;
+
+// compute next position
+let nextRow = row;
+let nextCol = col + 1;
+if (nextCol > 3) {
+nextCol = 0;
+nextRow++;
+}
+
+// skip until we find a non-readOnly input or exhaust rows
+while (nextRow <= 4) {
+const next = document.querySelector(
+`input[data-row='${nextRow}'][data-col='${nextCol}']`
+);
+if (next && !next.readOnly) {
+next.focus();
+return;
+}
+// advance position
+nextCol++;
+if (nextCol > 3) {
+nextCol = 0;
+nextRow++;
+}
+}
+}
+
+
+function handleKeydown(e) {
+const input = e.target;
+const row = +input.dataset.row;
+const col = +input.dataset.col;
+
+// BACKSPACE: always skip locked or empty cells
+if (e.key === "Backspace") {
+e.preventDefault();
+
+// find previous unlocked cell
+let pr = row, pc = col;
+// if not empty AND not readOnly, clear it first
+if (!input.readOnly && input.value) {
+input.value = "";
+highlightUsedLetters();
+return;
+}
+// otherwise move focus backward
+pc--;
+if (pc < 0) {
+pr--;
+pc = 3;
+}
+while (pr >= 1) {
+const prev = document.querySelector(
+`input[data-row='${pr}'][data-col='${pc}']`
+);
+if (prev && !prev.readOnly) {
+prev.focus();
+return;
+}
+pc--;
+if (pc < 0) {
+pr--;
+pc = 3;
+}
+}
+return;
+}
+
+// ENTER
+if (e.key === "Enter") {
+const submitBtn = document.getElementById("submitButton");
+const msgEl = document.getElementById("messageArea");
+// only submit if every cell is filled
+if (!submitBtn.disabled) {
+msgEl.textContent = "";  // clear prior warnings
+submitPuzzle();
+} else {
+// grid incomplete → show warning
+msgEl.textContent = "Please fill in every letter before submitting.";
+msgEl.classList.remove("success");
+}
+
+return;
+}
+
+// ARROW NAVIGATION (skip readOnly)
+if (/^Arrow(Left|Right|Up|Down)$/.test(e.key)) {
+e.preventDefault();
+let dr = 0, dc = 0;
+if (e.key === "ArrowLeft")  dc = -1;
+if (e.key === "ArrowRight") dc = 1;
+if (e.key === "ArrowUp")    dr = -1;
+if (e.key === "ArrowDown")  dr = 1;
+
+let nr = row + dr, nc = col + dc;
+while (nr >= 1 && nr <= 4 && nc >= 0 && nc <= 3) {
+const nxt = document.querySelector(
+`input[data-row='${nr}'][data-col='${nc}']`
+);
+if (nxt && !nxt.readOnly) {
+nxt.focus();
+return;
+}
+nr += dr;
+nc += dc;
+}
+}
+}
+
+////////////////////////////////////
+// 7) HIGHLIGHT AVAILABLE LETTERS
+////////////////////////////////////
+function highlightUsedLetters() {
+// 1) Gather only letters from unlocked (editable) inputs
+const active = new Set();
+document.querySelectorAll(".input-box input").forEach(input => {
+if (!input.readOnly && input.value.trim() !== "") {
+active.add(input.value.toUpperCase());
+}
+});
+
+// 2) Re-color each available-letter tile
+for (const letter in letterElements) {
+const el = letterElements[letter];
+// clear any previous state
+el.classList.remove("white", "blue", "green", "red");
+
+if (lockedGreenLetters.has(letter)) {
+// user-locked correct letters stay green
+el.classList.add("green");
+} else if (active.has(letter)) {
+// only letters actively typed into an unlocked cell go blue
+el.classList.add("blue");
+} else {
+// everything else is white
+el.classList.add("white");
+}
+}
+}
+
+
+///////////////////////////
+// 8) SUBMIT PUZZLE
+///////////////////////////
+function updateSubmitState() {
+// are all 4×4 inputs non–empty?
+const allFilled = Array.from(
+document.querySelectorAll(".input-box input")
+).every(inp => inp.value.trim().length === 1);
+const submitBtn = document.getElementById("submitButton");
+submitBtn.disabled = !allFilled;
+}
+
+// call once on build
+// and after every input
+document.querySelectorAll(".input-box input").forEach(inp => {
+inp.addEventListener("input", updateSubmitState);
+});
+
+function hamming(a, b) {
+let diff = 0, idx = -1;
+for (let i = 0; i < a.length; i++) {
+if (a[i] !== b[i]) { diff++; idx = i; }
+if (diff > 1) return { dist: diff };
+}
+return { dist: diff, idx };
+}
+
+// helper: check dictionary via free API (async)
+function isEnglish(word) {
+return fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`)
+.then(res => res.ok)
+.catch(_ => false);
+}
+function isEnglishLocal(word) {
+// ensure word is uppercase
+return Promise.resolve( englishWords.has(word.toUpperCase()) );
+}
+
+async function submitPuzzle() {
+// Clear messages
+const msgEl = document.getElementById("messageArea");
+msgEl.textContent = "";
+msgEl.classList.remove("success");
+
+// 1) Gather the full path
+const userWords = [];
+for (let row = 1; row <= 4; row++) {
+let w = "";
+for (let col = 0; col < 4; col++) {
+w += document.querySelector(`input[data-row='${row}'][data-col='${col}']`)
+.value.toUpperCase();
+}
+userWords.push(w);
+}
+const path = [startWord, ...userWords, endWord];
+
+// 2) Check for duplicates
+const seen = new Set();
+for (const word of path) {
+if (seen.has(word)) {
+flashGrid();
+msgEl.textContent = `You’ve used “${word}” more than once. Each word must be unique.`;
+return;
+}
+seen.add(word);
+}
+
+// 3) Validate each adjacent pair
+for (let i = 0; i < path.length - 1; i++) {
+const [w1, w2] = [path[i], path[i+1]];
+const { dist, idx } = hamming(w1, w2);
+if (dist !== 1) {
+flashGrid();
+msgEl.textContent = `Step ${i+1}: "${w1}" → "${w2}" must differ by exactly one letter.`;
+return;
+}
+const newLetter = w2[idx];
+// check you only used an available letter
+if (!availableLetters.includes(newLetter)) {
+flashGrid();
+msgEl.textContent = `Step ${i+1}: Letter "${newLetter}" is not in the available letters.`;
+return;
+}
+// optional: disallow re-using incorrect letters
+}
+
+// 4) Check all intermediate words are valid English
+const checks = path.slice(1, -1).map(w => isEnglishLocal(w));
+const results = await Promise.all(checks);
+const badIdx = results.findIndex(ok => !ok);
+if (badIdx !== -1) {
+flashGrid();
+msgEl.textContent = `"${path[1 + badIdx]}" is not in our approved Word List.`;
+return;
+} 
+
+// Everything passed!
+stopTimer();
+puzzleCompleted = true;
+
+// Disable all inputs to lock the grid
+document.querySelectorAll(".input-box input").forEach(input => {
+input.disabled = true;
+});
+
+// Lock all correct cells in green:
+document.querySelectorAll(".input-box input").forEach(inp => {
+inp.readOnly = true;
+inp.parentElement.classList.add("green");
+});
+
+
+// Display congrats message
+const finalTime = document.getElementById("timer").textContent.replace("TIME: ", "");
+msgEl.textContent = `✅ Well done! Your time was ${finalTime}`;
+msgEl.classList.add("success");
+
+// save to localStorage under a difficulty‐specific key
+const msgText   = msgEl.textContent;
+const today = getTodayDateString();
+const keyBase = `ww_${gameDifficulty}_${today}`;
+localStorage.setItem(`${keyBase}_time`, finalTime);
+localStorage.setItem(`${keyBase}_msg`,  msgText);
+
+// Hide and disable Reset/Submit now that we're done
+const resetBtn = document.getElementById("resetButton");
+resetBtn.style.display = "none";
+resetBtn.disabled = true;
+const submitBtn = document.getElementById("submitButton");
+submitBtn.style.display = "none";
+submitBtn.disabled = true;
+
+// === New: Show Congrats Overlay ===
+const labelMap = { easy: "Novice", hard: "Expert" };
+const diffLabel = labelMap[gameDifficulty] || gameDifficulty;
+document.getElementById("congratsSubtitle").textContent =
+`You finished the ${diffLabel} puzzle in ${finalTime}!`;
+
+const otherDiff = (gameDifficulty === "hard") ? "easy" : "hard";
+document.getElementById("tryOtherButton").textContent =
+`Try Daily ${otherDiff === "hard" ? "Expert" : "Novice"}`;
+document.getElementById("tryOtherButton").onclick = () => {
+document.getElementById("congratsOverlay").style.display = "none";
+restartGame(otherDiff);
+};
+const shareBtn = document.getElementById("sharePopupButton");
+if (shareBtn) { shareBtn.onclick = () => { shareScore(); }; }
+document.getElementById("admireButton").onclick = () => {
+document.getElementById("congratsOverlay").style.display = "none";
+// Show standard post-win UI
+document.getElementById("shareButton").style.display = "inline-block";
+populateOtherDifficultyButtons();
+};
+document.getElementById("congratsOverlay").style.display = "flex";
+}
+
+
+/////////////////////////////////
+// 9) RESET & SHUFFLE UTILS
+/////////////////////////////////
+function resetPuzzle() {
+// 1) Clear messages
+document.getElementById("completionMessage").textContent = "";
+document.getElementById("messageArea").textContent     = "";
+
+// 2) Clear only non‐hint inputs
+document.querySelectorAll(".input-box input").forEach(input => {
+if (input.classList.contains('hint-cell')) {
+// keep hint intact
+return;
+}
+// player‐entered cell → clear & unlock
+input.value = "";
+input.readOnly = false;
+input.parentElement.classList.remove("green", "red");
+});
+
+// 3) Reset tracking sets
+usedLetters.clear();
+lockedGreenLetters.clear();
+
+// 4) Reset available‐letter tiles to white
+for (const letter in letterElements) {
+const el = letterElements[letter];
+el.classList.remove("blue","green","red");
+el.classList.add("white");
+}
+
+// 5) Re-inject hints (in case Medium/Easy needs them again)
+if (gameDifficulty !== 'hard') {
+for (let step = 1; step <= 4; step++) {
+const codeA = puzzleDataRow[`EasyH${step}a`]?.trim();
+const codeB = gameDifficulty === 'easy'
+? puzzleDataRow[`EasyH${step}b`]?.trim()
+: null;
+
+[codeA, codeB].forEach(code => {
+if (!code) return;
+const col    = parseInt(code.charAt(0), 10) - 1;
+const rowNum = step;
+const letter = code.charAt(1);
+const inp = document.querySelector(
+`input[data-row='${rowNum}'][data-col='${col}']`
+);
+if (inp) {
+inp.value = letter;
+inp.readOnly = true;
+inp.classList.add('hint-cell');
+inp.parentElement.classList.add('green');
+}
+});
+}
+}
+
+// 6) Restore focus & recolor used letters
+document.querySelector("input[data-row='1'][data-col='0']")?.focus();
+highlightUsedLetters();
+
+}
+
+function shuffleArray(a){
+for(let i=a.length-1;i>0;i--){
+const j=Math.floor(Math.random()*(i+1));
+[a[i],a[j]]=[a[j],a[i]];
+}
+return a;
+}
+
+/////////////////////////////////
+// 10) Share button
+/////////////////////////////////
+    function shareScore() {
+			const labelMap = {
 				easy:   "Novice",
+				medium: "Medium",
 				hard:   "Expert"
 			};
-
-			["easy", "hard"].forEach(d => {
-				if (d === gameDifficulty) return;
-				const btn = document.createElement("button");
-				btn.textContent = `Try Daily ${labels[d]}`;
-				btn.onclick = () => restartGame(d);
-				container.appendChild(btn);
-			});
-		}
-
-    function handleFocus(e) {
-      const input = e.target;
-      const box   = input.parentElement;
-      box.classList.add("focused");  // add thick blue border
-      input.select();                // select the existing letter
-    }
-    
-    // Call this on blur
-    function handleBlur(e) {
-      e.target.parentElement.classList.remove("focused");
-    }
-
-    //////////////////////////////
-    // 1) START GAME & COUNTDOWN
-    //////////////////////////////
-    function startGame(diff){
-      gameDifficulty = diff;
-      document.getElementById("howToButton").style.display = "none";
-
-      // show countdown
-      const cd = document.getElementById("countdown");
-      cd.classList.remove("hidden");
-      let count = 3;
-      cd.textContent = count;
-      const iv = setInterval(()=>{
-        count--;
-        if(count > 0){
-          cd.textContent = count;
-        } else {
-          clearInterval(iv);
-          cd.classList.add("hidden");
-          // reveal labels & buttons
-          document.getElementById("availableLabel").style.display = "block";
-          document.getElementById("letterSelect").style.display = "flex";
-          const sb = document.getElementById("submitButton");
-          const rb = document.getElementById("resetButton");
-          sb.style.display = "inline-block"; sb.disabled = false;
-          rb.style.display = "inline-block"; rb.disabled = false;
-          // Show the timer now that the grid is about to appear
-          document.getElementById("timer").style.display = "block";
-          // load puzzle
-          fetchPuzzleNumberAndLoad();
-        }
-      }, 1000);
-    }
-
-    function restartGame(diff) {
-			gameDifficulty = diff;
-
-			// 1) Reset all old state
-			stopTimer();
-			puzzleCompleted = false;
-			lockedGreenLetters.clear();
-			usedLetters.clear();
-			document.getElementById("completionMessage").textContent = "";
-			document.getElementById("messageArea").textContent = "";
-			document.getElementById("timer").textContent = "TIME: 00:00.00";
-			document.getElementById("timer").style.display = "none";
-
-			// 2) Hide post-completion UI
-			document.getElementById("shareButton").style.display = "none";
-			document.getElementById("otherDifficultyButtons").innerHTML = "";
-
-			// 3) Hide play-area (grid, puzzle #, instructions, letters, buttons)
-			document.getElementById("puzzleNumber").style.display   = "none";
-			document.getElementById("instructions").style.display   = "none";
-			document.getElementById("availableLabel").style.display = "none";
-			document.getElementById("letterSelect").style.display   = "none";
-			document.getElementById("wordGrid").style.display       = "none";
-			document.getElementById("submitButton").style.display   = "none";
-			document.getElementById("submitButton").disabled        = true;
-			document.getElementById("resetButton").style.display    = "none";
-			document.getElementById("resetButton").disabled         = true;
-
-			// 4) Show 3-2-1 countdown
-			const cd = document.getElementById("countdown");
-			cd.classList.remove("hidden");
-			let count = 3;
-			cd.textContent = count;
-
-			const iv = setInterval(() => {
-				count--;
-				if (count > 0) {
-					cd.textContent = count;
-				} else {
-					clearInterval(iv);
-					cd.classList.add("hidden");
-
-					// 5) Reveal all the play-area elements again
-					document.getElementById("puzzleNumber").style.display   = "block";
-					document.getElementById("instructions").style.display   = "block";
-					document.getElementById("availableLabel").style.display = "block";
-					document.getElementById("letterSelect").style.display   = "flex";
-					document.getElementById("wordGrid").style.display       = "block";
-					document.getElementById("submitButton").style.display   = "inline-block";
-					document.getElementById("submitButton").disabled        = false;
-					document.getElementById("resetButton").style.display    = "inline-block";
-					document.getElementById("resetButton").disabled         = false;
-					document.getElementById("timer").style.display          = "block";
-
-					// 6) Finally re-load the puzzle
-					fetchPuzzleNumberAndLoad();
-				}
-			}, 1000);
-		}
-
-
-
-    ////////////////////////////////////
-    // 2) FETCH & BUILD DAILY PUZZLE
-    ////////////////////////////////////
-    function fetchPuzzleNumberAndLoad() {
-      Papa.parse(SCHEDULE_CSV_URL, {
-        download: true,
-        header:   true,
-        complete: results => {
-          const todayStr = getTodayDateString();            // e.g. "2025-07-04"
-          const row      = results.data.find(r => r.Date === todayStr);
-          if (!row) {
-            document.getElementById("completionMessage").textContent =
-              "No puzzle scheduled for today's date.";
-            return;
-          }
-    
-          // pick the right column name: "Easy", "Medium" or "Hard"
-          const colName = gameDifficulty[0].toUpperCase() +
-                          gameDifficulty.slice(1);        // e.g. "Hard"
-    
-          // parse the puzzle number out of that column
-          PUZZLE_NUMBER = parseInt(row[colName], 10);
-    
-          // now load the actual puzzle data
-          loadPuzzleData();
-        }
-      });
-    }
-
-    function loadPuzzleData(){
-      Papa.parse(PUZZLE_DATA_CSV_URL, {
-        download: true,
-        header:   true,
-        complete: res => {
-          const row = res.data.find(r => parseInt(r["Puzzle #"],10) === PUZZLE_NUMBER);
-          if (!row) {
-            document.getElementById("completionMessage").textContent = "Puzzle not found.";
-            return;
-          }
-          puzzleDataRow = row;
-          startWord  = row["StartWord"]?.trim();
-          endWord    = row["EndWord"]?.trim();
-          correctWords = [
-            startWord,
-            row["Word 1"]?.trim(),
-            row["Word 2"]?.trim(),
-            row["Word 3"]?.trim(),
-            row["Word 4"]?.trim(),
-            endWord
-          ];
-          availableLetters = [
-            row["Letter 1"], row["Letter 2"],
-            row["Letter 3"], row["Letter 4"],
-            row["Letter 5"]
-          ].filter(Boolean).map(s=>s.trim());
-          buildPuzzle(); 
-        }
-      });
-    }
-
-    //////////////////////////
-    // 3) BUILD THE GRID/UI
-    //////////////////////////
-    function buildPuzzle(){
-      // show the puzzle number above the instructions
-      const pn = document.getElementById("puzzleNumber");
-      pn.textContent = `Puzzle #${PUZZLE_NUMBER}`;  
-      pn.style.display = "block";
-      
-      // instructions text with bold words
-      document.getElementById("instructions").innerHTML =
-        `Swap exactly one letter between words to get from <strong>${startWord}</strong> to <strong>${endWord}</strong><br>(all six words must be unique)`;
-
-      const grid = document.getElementById("wordGrid");
-      const letterSelect = document.getElementById("letterSelect");
-      grid.innerHTML = ""; letterSelect.innerHTML = "";
-      document.getElementById("completionMessage").textContent = "";
-      document.getElementById("timer").textContent = "TIME: 00:00.00";
-      letterElements = {}; puzzleCompleted = false;
-
-      // available letters
-      shuffleArray(availableLetters).forEach(letter=>{
-        const el = createLetterBox(letter, "white");
-        letterSelect.appendChild(el);
-        letterElements[letter] = el;
-      });
-
-      // start word row
-      const sr = document.createElement("div"); sr.className="letter-row";
-      for(const c of startWord) sr.appendChild(createLetterBox(c,"green"));
-      grid.appendChild(sr);
-
-      // input rows
-      for(let i=1;i<=4;i++){
-        grid.appendChild(createInputRow(i));
-      }
-
-      // hint letters
-      if (gameDifficulty !== 'hard') {
-        for (let step = 1; step <= 4; step++) {
-          const codeA = puzzleDataRow[`EasyH${step}a`]?.trim();
-          const codeB = gameDifficulty === 'easy'
-            ? puzzleDataRow[`EasyH${step}b`]?.trim()
-            : null;
-      
-          [codeA, codeB].forEach(code => {
-            if (!code) return;
-            const col    = parseInt(code.charAt(0), 10) - 1;
-            const rowNum = step;
-            const letter = code.charAt(1);
-            const inp = document.querySelector(
-              `input[data-row='${rowNum}'][data-col='${col}']`
-            );
-            if (inp) {
-              inp.value = letter;
-              inp.readOnly = true;
-              inp.classList.add('hint-cell');            // ← tag it
-              inp.parentElement.classList.add('green');
-              // note: do NOT add to lockedGreenLetters
-            }
-          });
-        }
-      }
-
-      
-      // end word row
-      const er = document.createElement("div"); er.className="letter-row";
-      for(const c of endWord) er.appendChild(createLetterBox(c,"green"));
-      grid.appendChild(er);
-
-      updateSubmitState();
-
-      // focus first read-only cell
-      const inputs = Array.from(document.querySelectorAll(".input-box input"));
-      const firstEditable = inputs.find(input => !input.readOnly);
-      if (firstEditable) firstEditable.focus();
-      
-      // if they’ve already solved this diff today, restore and skip the timer
-      if (restoreIfCompleted()) {
-        return;
-      }
-      startTimer();
-    }
-
-    function restoreIfCompleted() {
-      const today   = getTodayDateString();
-      const keyBase = `ww_${gameDifficulty}_${today}`;
-      const savedTime = localStorage.getItem(`${keyBase}_time`);
-      const savedMsg  = localStorage.getItem(`${keyBase}_msg`);
-
-      if (!savedTime || !savedMsg) return false;
-    
-      // 1) Stop any timer
-      stopTimer();
-      puzzleCompleted = true;
-    
-      // 2) Fill in and lock all the input cells with the correct words
-      document.querySelectorAll(".input-box input").forEach(input => {
-        const r = parseInt(input.dataset.row, 10);  // 1..4
-        const c = parseInt(input.dataset.col, 10);  // 0..3
-        const letter = correctWords[r][c];          // correctWords[1] is Word 1, etc.
-        input.value = letter;
-        input.readOnly = true;
-        input.parentElement.classList.remove("red");
-        input.parentElement.classList.add("green");
-      });
-    
-      // 3) Restore timer display & congrats message
-      document.getElementById("timer").textContent =
-        `TIME: ${savedTime}`;
-      const msgEl = document.getElementById("messageArea");
-      msgEl.textContent = localStorage.getItem(`ww_msg_${gameDifficulty}`);
-      msgEl.classList.add("success");
-    
-      // 4) Show Share + other-difficulty buttons
-      document.getElementById("shareButton").style.display = "inline-block";
-      populateOtherDifficultyButtons();
-
-      // Hide and disable Reset now that we're done**
-      const resetBtn = document.getElementById("resetButton");
-      resetBtn.style.display = "none";
-      resetBtn.disabled = true;
-    
-      // Also disable Submit to prevent re-submissions
-      const submitBtn = document.getElementById("submitButton");
-      submitBtn.style.display = "none";
-      submitBtn.disabled = true;
-    
-      return true;
-    }
-    //////////////////////////
-    // 4) TIMER
-    //////////////////////////
-    function startTimer(){
-		  const today = getTodayDateString();  
-			const key   = `ww_timerStart_${gameDifficulty}_${today}`;
-			const saved = localStorage.getItem(key);
-			
-			if (saved) {
-				// resume from the old start
-				startTime = new Date(saved);
-			} else {
-				// fresh start
-				startTime = new Date();
-				localStorage.setItem(key, startTime.toISOString());
-			}
-      
-      clearInterval(timerInterval);
-      timerInterval = setInterval(()=>{
-        const e = new Date(new Date() - startTime);
-        const mm = String(e.getUTCMinutes()).padStart(2,'0');
-        const ss = String(e.getUTCSeconds()).padStart(2,'0');
-        const ms = String(Math.floor(e.getUTCMilliseconds()/10)).padStart(2,'0');
-        document.getElementById("timer").textContent = `TIME: ${mm}:${ss}.${ms}`;
-      },50);
-    }
-    function stopTimer(){  
-			clearInterval(timerInterval);
-
-			// remove the persisted start, so tomorrow’s puzzle won't reuse it
-			const today = getTodayDateString();
-			const key   = `ww_timerStart_${gameDifficulty}_${today}`;
-			localStorage.removeItem(key);
-		}
-
-    //////////////////////////////////////
-    // 5) CREATE ROWS & LETTER BOXES
-    //////////////////////////////////////
-    function createLetterBox(letter, colorClass="white"){
-      const d=document.createElement("div");
-      d.className=`letter-box ${colorClass}`;
-      d.textContent=letter;
-      return d;
-    }
-    function createInputRow(rowIndex){
-      const row=document.createElement("div"); row.className="letter-row";
-      for(let col=0;col<4;col++){
-        const box=document.createElement("div"); box.className="input-box";
-        const inp=document.createElement("input");
-        inp.maxLength=1;
-        inp.dataset.row=rowIndex;
-        inp.dataset.col=col;
-        inp.addEventListener("focus", e => {
-          const inp = e.target;
-          if (!inp.readOnly) {
-            // select the one-character content
-            inp.setSelectionRange(0, inp.value.length);
-          }
-        });
-        //inp.addEventListener("focus", ()=> currentInput=inp);
-        //inp.addEventListener("focus", handleFocus);
-        inp.addEventListener("input", handleInput);
-        inp.addEventListener("blur",  handleBlur);
-        inp.addEventListener("keydown", handleKeydown);
-        box.appendChild(inp);
-        row.appendChild(box);
-      }
-      return row;
-    }
-
-    ////////////////////////////////////
-    // 6) INPUT HANDLERS & NAVIGATION
-    ////////////////////////////////////
-    function handleInput(e) {
-      const input = e.target;
-      currentInput = input;
-      // normalize
-      input.value = input.value.toUpperCase();
-      highlightUsedLetters();
-      updateSubmitState();
-    
-      // only auto-advance if they actually typed something
-      if (!input.value) return;
-    
-      let row = +input.dataset.row;
-      let col = +input.dataset.col;
-    
-      // compute next position
-      let nextRow = row;
-      let nextCol = col + 1;
-      if (nextCol > 3) {
-        nextCol = 0;
-        nextRow++;
-      }
-    
-      // skip until we find a non-readOnly input or exhaust rows
-      while (nextRow <= 4) {
-        const next = document.querySelector(
-          `input[data-row='${nextRow}'][data-col='${nextCol}']`
-        );
-        if (next && !next.readOnly) {
-          next.focus();
-          return;
-        }
-        // advance position
-        nextCol++;
-        if (nextCol > 3) {
-          nextCol = 0;
-          nextRow++;
-        }
-      }
-    }
-
-
-    function handleKeydown(e) {
-      const input = e.target;
-      const row = +input.dataset.row;
-      const col = +input.dataset.col;
-    
-      // BACKSPACE: always skip locked or empty cells
-      if (e.key === "Backspace") {
-        e.preventDefault();
-    
-        // find previous unlocked cell
-        let pr = row, pc = col;
-        // if not empty AND not readOnly, clear it first
-        if (!input.readOnly && input.value) {
-          input.value = "";
-          highlightUsedLetters();
-          return;
-        }
-        // otherwise move focus backward
-        pc--;
-        if (pc < 0) {
-          pr--;
-          pc = 3;
-        }
-        while (pr >= 1) {
-          const prev = document.querySelector(
-            `input[data-row='${pr}'][data-col='${pc}']`
-          );
-          if (prev && !prev.readOnly) {
-            prev.focus();
-            return;
-          }
-          pc--;
-          if (pc < 0) {
-            pr--;
-            pc = 3;
-          }
-        }
-        return;
-      }
-    
-      // ENTER
-      if (e.key === "Enter") {
-        const submitBtn = document.getElementById("submitButton");
-        const msgEl = document.getElementById("messageArea");
-        // only submit if every cell is filled
-        if (!submitBtn.disabled) {
-          msgEl.textContent = "";  // clear prior warnings
-          submitPuzzle();
-        } else {
-          // grid incomplete → show warning
-          msgEl.textContent = "Please fill in every letter before submitting.";
-          msgEl.classList.remove("success");
-        }
-        
-        return;
-      }
-    
-      // ARROW NAVIGATION (skip readOnly)
-      if (/^Arrow(Left|Right|Up|Down)$/.test(e.key)) {
-        e.preventDefault();
-        let dr = 0, dc = 0;
-        if (e.key === "ArrowLeft")  dc = -1;
-        if (e.key === "ArrowRight") dc = 1;
-        if (e.key === "ArrowUp")    dr = -1;
-        if (e.key === "ArrowDown")  dr = 1;
-    
-        let nr = row + dr, nc = col + dc;
-        while (nr >= 1 && nr <= 4 && nc >= 0 && nc <= 3) {
-          const nxt = document.querySelector(
-            `input[data-row='${nr}'][data-col='${nc}']`
-          );
-          if (nxt && !nxt.readOnly) {
-            nxt.focus();
-            return;
-          }
-          nr += dr;
-          nc += dc;
-        }
-      }
-    }
-
-    ////////////////////////////////////
-    // 7) HIGHLIGHT AVAILABLE LETTERS
-    ////////////////////////////////////
-    function highlightUsedLetters() {
-      // 1) Gather only letters from unlocked (editable) inputs
-      const active = new Set();
-      document.querySelectorAll(".input-box input").forEach(input => {
-        if (!input.readOnly && input.value.trim() !== "") {
-          active.add(input.value.toUpperCase());
-        }
-      });
-    
-      // 2) Re-color each available-letter tile
-      for (const letter in letterElements) {
-        const el = letterElements[letter];
-        // clear any previous state
-        el.classList.remove("white", "blue", "green", "red");
-    
-        if (lockedGreenLetters.has(letter)) {
-          // user-locked correct letters stay green
-          el.classList.add("green");
-        } else if (active.has(letter)) {
-          // only letters actively typed into an unlocked cell go blue
-          el.classList.add("blue");
-        } else {
-          // everything else is white
-          el.classList.add("white");
-        }
-      }
-    }
-
-
-    ///////////////////////////
-    // 8) SUBMIT PUZZLE
-    ///////////////////////////
-    function updateSubmitState() {
-      // are all 4×4 inputs non–empty?
-      const allFilled = Array.from(
-        document.querySelectorAll(".input-box input")
-      ).every(inp => inp.value.trim().length === 1);
-      const submitBtn = document.getElementById("submitButton");
-      submitBtn.disabled = !allFilled;
-    }
-    
-    // call once on build
-    // and after every input
-    document.querySelectorAll(".input-box input").forEach(inp => {
-      inp.addEventListener("input", updateSubmitState);
-    });
-
-    function hamming(a, b) {
-      let diff = 0, idx = -1;
-      for (let i = 0; i < a.length; i++) {
-        if (a[i] !== b[i]) { diff++; idx = i; }
-        if (diff > 1) return { dist: diff };
-      }
-      return { dist: diff, idx };
-    }
-
-    // helper: check dictionary via free API (async)
-    function isEnglish(word) {
-      return fetch(`https://api.dictionaryapi.dev/api/v2/entries/en/${word}`)
-        .then(res => res.ok)
-        .catch(_ => false);
-    }
-		function isEnglishLocal(word) {
-			// ensure word is uppercase
-			return Promise.resolve( englishWords.has(word.toUpperCase()) );
-		}
-    
-    async function submitPuzzle() {
-      // Clear messages
-      const msgEl = document.getElementById("messageArea");
-      msgEl.textContent = "";
-      msgEl.classList.remove("success");
-      
-      // 1) Gather the full path
-      const userWords = [];
-      for (let row = 1; row <= 4; row++) {
-        let w = "";
-        for (let col = 0; col < 4; col++) {
-          w += document.querySelector(`input[data-row='${row}'][data-col='${col}']`)
-                    .value.toUpperCase();
-        }
-        userWords.push(w);
-      }
-      const path = [startWord, ...userWords, endWord];
-			
-			// 2) Check for duplicates
-      const seen = new Set();
-      for (const word of path) {
-        if (seen.has(word)) {
-          flashGrid();
-          msgEl.textContent = `You’ve used “${word}” more than once. Each word must be unique.`;
-          return;
-        }
-        seen.add(word);
-      }
- 
-      // 3) Validate each adjacent pair
-      for (let i = 0; i < path.length - 1; i++) {
-        const [w1, w2] = [path[i], path[i+1]];
-        const { dist, idx } = hamming(w1, w2);
-        if (dist !== 1) {
-          flashGrid();
-          msgEl.textContent = `Step ${i+1}: "${w1}" → "${w2}" must differ by exactly one letter.`;
-          return;
-        }
-        const newLetter = w2[idx];
-        // check you only used an available letter
-        if (!availableLetters.includes(newLetter)) {
-          flashGrid();
-          msgEl.textContent = `Step ${i+1}: Letter "${newLetter}" is not in the available letters.`;
-          return;
-        }
-        // optional: disallow re-using incorrect letters
-      }
-    
-      // 4) Check all intermediate words are valid English
-      const checks = path.slice(1, -1).map(w => isEnglishLocal(w));
-      const results = await Promise.all(checks);
-      const badIdx = results.findIndex(ok => !ok);
-      if (badIdx !== -1) {
-        flashGrid();
-        msgEl.textContent = `"${path[1 + badIdx]}" is not in our approved Word List.`;
-        return;
-      } 
-      
-      // Everything passed!
-      stopTimer();
-      puzzleCompleted = true;
-    
-      // Disable all inputs to lock the grid
-      document.querySelectorAll(".input-box input").forEach(input => {
-        input.disabled = true;
-      });
-
-      // Lock all correct cells in green:
-      document.querySelectorAll(".input-box input").forEach(inp => {
-        inp.readOnly = true;
-        inp.parentElement.classList.add("green");
-      });
-
-
-      // Display congrats message
-      const finalTime = document.getElementById("timer").textContent.replace("TIME: ", "");
-      msgEl.textContent = `✅ Well done! Your time was ${finalTime}`;
-      msgEl.classList.add("success");
-
-      // save to localStorage under a difficulty‐specific key
-      const msgText   = msgEl.textContent;
-      const today = getTodayDateString();
-      const keyBase = `ww_${gameDifficulty}_${today}`;
-      localStorage.setItem(`${keyBase}_time`, finalTime);
-      localStorage.setItem(`${keyBase}_msg`,  msgText);
-
-      // Hide and disable Reset/Submit now that we're done
-      const resetBtn = document.getElementById("resetButton");
-      resetBtn.style.display = "none";
-      resetBtn.disabled = true;
-      const submitBtn = document.getElementById("submitButton");
-      submitBtn.style.display = "none";
-      submitBtn.disabled = true;
-
-      // === New: Show Congrats Overlay ===
-      const labelMap = { easy: "Novice", hard: "Expert" };
-      const diffLabel = labelMap[gameDifficulty] || gameDifficulty;
-      document.getElementById("congratsSubtitle").textContent =
-        `You finished the ${diffLabel} puzzle in ${finalTime}!`;
-
-      const otherDiff = (gameDifficulty === "hard") ? "easy" : "hard";
-      document.getElementById("tryOtherButton").textContent =
-        `Try Daily ${otherDiff === "hard" ? "Expert" : "Novice"}`;
-      document.getElementById("tryOtherButton").onclick = () => {
-        document.getElementById("congratsOverlay").style.display = "none";
-        restartGame(otherDiff);
-      };
-      const shareBtn = document.getElementById("sharePopupButton");
-      if (shareBtn) { shareBtn.onclick = () => { shareScore(); }; }
-			
-			const msg = buildShareMessage();
-			updateShareSmsLink(msg);
-
-      document.getElementById("admireButton").onclick = () => {
-        document.getElementById("congratsOverlay").style.display = "none";
-        // Show standard post-win UI
-        document.getElementById("shareButton").style.display = "inline-block";
-        populateOtherDifficultyButtons();
-      };
-      document.getElementById("congratsOverlay").style.display = "flex";
-    }
-    
-
-    /////////////////////////////////
-    // 9) RESET & SHUFFLE UTILS
-    /////////////////////////////////
-    function resetPuzzle() {
-      // 1) Clear messages
-      document.getElementById("completionMessage").textContent = "";
-      document.getElementById("messageArea").textContent     = "";
-    
-      // 2) Clear only non‐hint inputs
-      document.querySelectorAll(".input-box input").forEach(input => {
-        if (input.classList.contains('hint-cell')) {
-          // keep hint intact
-          return;
-        }
-        // player‐entered cell → clear & unlock
-        input.value = "";
-        input.readOnly = false;
-        input.parentElement.classList.remove("green", "red");
-      });
-    
-      // 3) Reset tracking sets
-      usedLetters.clear();
-      lockedGreenLetters.clear();
-    
-      // 4) Reset available‐letter tiles to white
-      for (const letter in letterElements) {
-        const el = letterElements[letter];
-        el.classList.remove("blue","green","red");
-        el.classList.add("white");
-      }
-    
-      // 5) Re-inject hints (in case Medium/Easy needs them again)
-      if (gameDifficulty !== 'hard') {
-        for (let step = 1; step <= 4; step++) {
-          const codeA = puzzleDataRow[`EasyH${step}a`]?.trim();
-          const codeB = gameDifficulty === 'easy'
-            ? puzzleDataRow[`EasyH${step}b`]?.trim()
-            : null;
-    
-          [codeA, codeB].forEach(code => {
-            if (!code) return;
-            const col    = parseInt(code.charAt(0), 10) - 1;
-            const rowNum = step;
-            const letter = code.charAt(1);
-            const inp = document.querySelector(
-              `input[data-row='${rowNum}'][data-col='${col}']`
-            );
-            if (inp) {
-              inp.value = letter;
-              inp.readOnly = true;
-              inp.classList.add('hint-cell');
-              inp.parentElement.classList.add('green');
-            }
-          });
-        }
-      }
-    
-      // 6) Restore focus & recolor used letters
-      document.querySelector("input[data-row='1'][data-col='0']")?.focus();
-      highlightUsedLetters();
-
-    }
-      
-    function shuffleArray(a){
-      for(let i=a.length-1;i>0;i--){
-        const j=Math.floor(Math.random()*(i+1));
-        [a[i],a[j]]=[a[j],a[i]];
-      }
-      return a;
-    }
-
-    /////////////////////////////////
-    // 10) Share button
-    /////////////////////////////////
-		function buildShareMessage() {
-			const labelMap = { easy: "Novice", medium: "Medium", hard: "Expert" };
 			const diffLabel =
 				labelMap[gameDifficulty] ||
 				gameDifficulty.charAt(0).toUpperCase() + gameDifficulty.slice(1);
 
 			const timeText = document.getElementById("timer")
-				.textContent.replace("TIME: ", "").trim();
+				.textContent
+				.replace("TIME: ", "")
+				.trim();
 
 			const isExpert = (gameDifficulty === "hard");
 			const square   = isExpert ? "🟥" : "🟩";
 
+			// Parse "MM:SS.xx" → seconds as float
 			function parseTime(t) {
 				const [mm, rest] = t.split(":");
-				const [ss, cs]   = rest.split(".");
-				return Number(mm) * 60 + Number(ss) + Number(cs) / 100;
+				const [ss, ms]   = rest.split(".");
+				return Number(mm) * 60 + Number(ss) + Number(ms) / 100;
 			}
-			const totalSeconds = parseTime(timeText);
-
-			let paceEmoji;
-			if (isExpert) {
-				if (totalSeconds < 20) paceEmoji = "🔥🔥🔥";
-				else if (totalSeconds < 45) paceEmoji = "🔥🔥";
-				else if (totalSeconds <= 60) paceEmoji = "🔥";
-				else paceEmoji = "🧊";
-			} else {
-				if (totalSeconds < 10) paceEmoji = "🔥🔥🔥";
-				else if (totalSeconds < 20) paceEmoji = "🔥🔥";
-				else if (totalSeconds <= 30) paceEmoji = "🔥";
-				else paceEmoji = "🧊";
-			}
-
-			return (
-				`Word Whiz #${PUZZLE_NUMBER} ${diffLabel} ${square}\n` +
-				`${timeText} ${paceEmoji}` 
-			);
-		}
-
-		function updateShareSmsLink(shareMessage) {
-			const a = document.getElementById("shareSmsLink");
-			if (!a) return;
-
-			// iOS is picky: it prefers "sms:&body="; many others accept "sms:?body="
-			const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-			const bodyParam = encodeURIComponent(shareMessage);
-
-			const href = isIOS
-				? `sms:&body=${bodyParam}`
-				: `sms:?body=${bodyParam}`;
-
-			a.href = href;
-
-			// Optional: if SMS can't open (desktop), fall back to copy
-			a.onclick = (e) => {
-				// If it's not a phone-ish environment, copying is usually better UX
-				const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
-				if (!isMobile) {
-					e.preventDefault();
-					copyToClipboard(shareMessage);
-				}
-				// otherwise let the default navigation happen
-			};
-		}
-
-		
 		function showToast(msg, ms = 2500) {
 			const el = document.getElementById("toast");
 			if (!el) return;
@@ -1203,8 +1160,62 @@
 
 		function shareScore() {
 			try {
-				const shareMessage = buildShareMessage();
-				updateShareSmsLink(shareMessage);
+				const labelMap = { easy: "Novice", medium: "Medium", hard: "Expert" };
+				const diffLabel =
+					labelMap[gameDifficulty] ||
+					gameDifficulty.charAt(0).toUpperCase() + gameDifficulty.slice(1);
+
+				const timeText = document.getElementById("timer")
+					.textContent.replace("TIME: ", "").trim();
+
+				const isExpert = (gameDifficulty === "hard");
+				const square   = isExpert ? "🟥" : "🟩";
+
+			const totalSeconds = parseTime(timeText);
+
+			// --- Tiered Emojis ---
+			let paceEmoji;
+			if (isExpert) {
+				// Expert: 20 / 45 / 60 seconds
+				if (totalSeconds < 20) {
+					paceEmoji = "🔥🔥🔥";
+				} else if (totalSeconds < 45) {
+					paceEmoji = "🔥🔥";
+				} else if (totalSeconds <= 60) {
+					paceEmoji = "🔥";
+				function parseTime(t) {
+					const [mm, rest] = t.split(":");
+					const [ss, ms]   = rest.split(".");
+					return Number(mm) * 60 + Number(ss) + Number(ms) / 100;
+				}
+				const totalSeconds = parseTime(timeText);
+
+				let paceEmoji;
+				if (isExpert) {
+					if (totalSeconds < 20) paceEmoji = "🔥🔥🔥";
+					else if (totalSeconds < 45) paceEmoji = "🔥🔥";
+					else if (totalSeconds <= 60) paceEmoji = "🔥";
+					else paceEmoji = "🧊";
+} else {
+					paceEmoji = "🧊";
+					if (totalSeconds < 10) paceEmoji = "🔥🔥🔥";
+					else if (totalSeconds < 20) paceEmoji = "🔥🔥";
+					else if (totalSeconds <= 30) paceEmoji = "🔥";
+					else paceEmoji = "🧊";
+}
+			} else {
+				// Novice: 10 / 20 / 30 seconds
+				if (totalSeconds < 10) {
+					paceEmoji = "🔥🔥🔥";
+				} else if (totalSeconds < 20) {
+					paceEmoji = "🔥🔥";
+				} else if (totalSeconds <= 30) {
+					paceEmoji = "🔥";
+
+				const shareMessage =
+					`Word Whiz #${PUZZLE_NUMBER} ${diffLabel} ${square}\n` +
+					`${timeText} ${paceEmoji}\n` +
+					`https://think-fast-games.com/pages/daily-puzzle`;
 
 				const inIframe = (window.self !== window.top);
 
@@ -1218,26 +1229,41 @@
 					}).catch(() => {
 						copyToClipboard(shareMessage);
 					});
-				} else {
+} else {
+					paceEmoji = "🧊";
 					copyToClipboard(shareMessage);
-				}
+}
 			} catch (err) {
 				console.error("shareScore() error:", err);
 				showToast("Couldn’t share—try again.");
-			}
+}
 		}
 
+			// LEFT-JUSTIFIED (no leading spaces)
+			const shareMessage =
+				`Word Whiz #${PUZZLE_NUMBER} ${diffLabel} ${square}\n` +
+				`${timeText} ${paceEmoji}\n` +
+				`https://think-fast-games.com/pages/daily-puzzle`;
 
+			if (navigator.share) {
+				navigator.share({
+					title: `Word Whiz #${PUZZLE_NUMBER}`,
+					text: shareMessage,
+				}).catch(err => {
+					console.error("Share failed:", err);
+					copyToClipboard(shareMessage);
+				});
 		function copyToClipboard(text) {
 			// Try modern clipboard API first
 			if (navigator.clipboard && window.isSecureContext) {
 				navigator.clipboard.writeText(text)
 					.then(() => showToast("Score copied to clipboard!"))
 					.catch(() => fallbackCopy(text));
-			} else {
+} else {
+				copyToClipboard(shareMessage);
 				fallbackCopy(text);
-			}
-		}
+}
+}
 
 		function fallbackCopy(text) {
 			// Works better in many iframe situations than clipboard.writeText
@@ -1273,21 +1299,41 @@
 			}
 		}
 
-
-    // as soon as the DOM is ready:
-    document.addEventListener("DOMContentLoaded", () => {
-      const sel = document.getElementById("difficultySelect");
-      sel.addEventListener("change", () => {
-        const diff = sel.value;          // "hard", "medium" or "easy"
-        sel.style.display = "none";      // hide the dropdown
-        document.getElementById("howToButton").style.display = "none";
-        startGame(diff);                 // kickoff your existing flow
-      });
-    });
     
-  </script>
+    // Helper to copy text and alert the user
+    function copyToClipboard(text) {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text)
+          .then(() => alert("Score copied to clipboard!"))
+          .catch(() => fallbackCopy(text));
+      } else {
+        fallbackCopy(text);
+      }
+    }
+    
+    // Old-school execCommand fallback
+    function fallbackCopy(text) {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+      alert("Score copied to clipboard!");
+    }
+
+// as soon as the DOM is ready:
+document.addEventListener("DOMContentLoaded", () => {
+const sel = document.getElementById("difficultySelect");
+sel.addEventListener("change", () => {
+const diff = sel.value;          // "hard", "medium" or "easy"
+sel.style.display = "none";      // hide the dropdown
+document.getElementById("howToButton").style.display = "none";
+startGame(diff);                 // kickoff your existing flow
+});
+});
+
+</script>
 
 
 
-
-</body>
